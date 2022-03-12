@@ -1,0 +1,79 @@
+<div class="w-screen h-screen flex justify-center items-center bg-gray-100">
+  <form
+    [formGroup]="myForm"
+    class="p-10 bg-white rounded flex justify-center items-center flex-col shadow-md"
+  >
+    <div>
+      <p class="mb-5 text-3xl uppercase text-gray-600">Login</p>
+    </div>
+    <div class = "object-right-top">
+    select user
+    <div class="p-2">
+      <div class="group inline-block relative">
+        <button
+          class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center"
+        >
+          <svg
+            class="fill-current h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+            />
+          </svg>
+        </button>
+        <ul class="absolute hidden text-gray-700 pt-1 group-hover:block">
+          <li class="">
+            <a
+              class="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+              (click)="adminUser()"
+              >Admin</a
+            >
+          </li>
+          <li class="">
+            <a
+              class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+              (click)="staffUser()"
+              >Staff</a
+            >
+          </li>
+          <li class="">
+            <a
+              class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap"
+              (click)="studentUser()"
+              >Student</a
+            >
+          </li>
+        </ul>
+      </div>
+      </div>
+    </div>
+    <input
+      type="email"
+      name="email"
+      class="mb-5 p-3 w-80 focus:border-purple-700 rounded border-2 outline-none"
+      autocomplete="off"
+      placeholder="Email"
+      formControlName="username"
+      required
+    />
+    <input
+      type="password"
+      name="password"
+      class="mb-5 p-3 w-80 focus:border-purple-700 rounded border-2 outline-none"
+      autocomplete="off"
+      placeholder="Password"
+      formControlName="password"
+      required
+    />
+    <button
+      class="bg-purple-600 hover:bg-purple-900 text-white font-bold p-2 rounded w-80"
+      id="login"
+      type="submit"
+      (click)="checkUser(); setUserName()"
+    >
+      <span>Login</span>
+    </button>
+  </form>
+</div>

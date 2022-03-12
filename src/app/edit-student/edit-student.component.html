@@ -1,0 +1,77 @@
+<div
+  class="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12"
+>
+  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+    <div
+      class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10"
+    >
+      <div class="max-w-md mx-auto">
+        <div class="flex items-center space-x-5">
+          <div
+            class="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono"
+          >
+            i
+          </div>
+          <div
+            class="block pl-2 font-semibold text-xl self-start text-gray-700"
+          >
+            <h2 class="leading-relaxed">Edit Student</h2>
+            <p class="text-sm text-gray-500 font-normal leading-relaxed">
+              Please provide the details of the student in this form.
+            </p>
+          </div>
+          <div class="object-none h-10 w-10 object-right-top">
+            <img
+              (click)="back(); deleteUSerFromLocalStorage();"
+              src="https://www.svgrepo.com/show/55189/cancel.svg"
+            />
+          </div>
+        </div>
+        <div class="divide-y divide-gray-200">
+          <form [formGroup]="myForm">
+            <div
+              class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7"
+            >
+              <div class="flex flex-col">
+                <label class="leading-loose">Student Name</label>
+                <input
+                  type="text"
+                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                  placeholder="name"
+                  formControlName="name"
+                  required
+                />
+              </div>
+              <div class="flex flex-col">
+                <label class="leading-loose">Department</label>
+                <input
+                  type="text"
+                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                  placeholder="ECE/CSE/EEE/MECH/CIVIL"
+                  formControlName="department"
+                  required
+                />
+              </div>
+              <div class="flex flex-col">
+                <label class="leading-loose">Username</label>
+                <input
+                  type="text"
+                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
+                  placeholder="ECE/CSE/EEE/MECH/CIVIL"
+                  formControlName="username"
+                  required
+                />
+              </div>
+              <button
+                (click)="editStudent(); back(); deleteUSerFromLocalStorage();"
+                class="bg-green-400 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+              >
+                SAVE
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
