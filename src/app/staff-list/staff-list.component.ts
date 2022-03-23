@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../services/api-service.service';
 import { Staff } from '../staff';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-staff-list',
@@ -15,10 +16,19 @@ export class StaffListComponent implements OnInit {
 
   public staffuser: any;
 
+  filteredOptions?: Observable<String[]>;
+
+  staffList1 = [];
+
+  staffNameList = [];
+
+  p:number = 1;
+
   constructor(
     private apiService: ApiServiceService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
@@ -26,18 +36,25 @@ export class StaffListComponent implements OnInit {
     this.myForm = this.fb.group({
       staffUnique: new FormControl(),
     });
-    if (this.router.url === '/home/staff/profile') {
-      this.apiService
-        .findStaffByUsername(localStorage.getItem('username'))
-        .subscribe((res) => {
-          this.staffuser = res;
-        });
-    }
+    this.filteredOptions = this.myForm.get('staffUnique')?.valueChanges.pipe(
+      startWith(''),
+      map((res: any) => this._filter(res))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.staffNameList.filter((option: any) =>
+      option.toLowerCase().includes(filterValue)
+    );
   }
   public staffList(): void {
     this.apiService.staffList().subscribe(
-      (res: Staff[]) => {
+      (res: any) => {
         this.staff = res;
+        const staffNameList = res.data.map((item: { name: any; }) => item.name)
+        this.staffNameList = staffNameList;
+       
       },
       (err: any) => {
         alert(err.message);
@@ -65,7 +82,7 @@ export class StaffListComponent implements OnInit {
     this.router.navigate(['editstaff']);
   }
   deleteStaff() {
-    this.router.navigate(['deletestaff']);
+    this.router.navigate(['delete'], {relativeTo:this.route});
   }
   checkAdmin() {
     return localStorage.getItem('adminUser');
@@ -73,6 +90,13 @@ export class StaffListComponent implements OnInit {
   checkStaff() {
     return localStorage.getItem('staffUser');
   }
+
+  checkStudent() {
+    return localStorage.getItem('studentUser');
+  }
+
+
+  
   checkOwnId() {
     return localStorage.getItem('username') === this.staffuser.data.username;
   }

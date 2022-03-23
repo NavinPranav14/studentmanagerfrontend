@@ -22,55 +22,89 @@
               Please provide the details of the staff in this form.
             </p>
           </div>
-          <div class="object-none h-10 w-10 object-right-top">
+          <div class="object-none h-10 w-10 object-right-top cursor-pointer">
             <img
-              (click)="back(); deleteUSerFromLocalStorage();"
+              (click)="deleteUSerFromLocalStorage()"
+              routerLink="/home/staffs"
               src="https://www.svgrepo.com/show/55189/cancel.svg"
             />
           </div>
         </div>
         <div class="divide-y divide-gray-200">
           <form [formGroup]="myForm">
-            <div
-              class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7"
-            >
-              <div class="flex flex-col">
-                <label class="leading-loose">Staff Name</label>
-                <input
-                  type="text"
-                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                  placeholder="name"
-                  formControlName="name"
-                  required
-                />
-              </div>
-              <div class="flex flex-col">
-                <label class="leading-loose">Department</label>
-                <input
-                  type="text"
-                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                  placeholder="ECE/CSE/EEE/MECH/CIVIL"
-                  formControlName="department"
-                  required
-                />
-              </div>
-              <div class="flex flex-col">
-                <label class="leading-loose">Username</label>
-                <input
-                  type="text"
-                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                  placeholder="email"
-                  formControlName="username"
-                  required
-                />
-              </div>
-              <button
-                (click)="editStaff(); back(); deleteUSerFromLocalStorage()"
-                class="bg-green-400 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
-              >
-                SAVE
-              </button>
+            <br /><br />
+            <mat-form-field appearance="outline" class="h-5 w-full">
+              <mat-label>Name</mat-label>
+              <input type="text" matInput formControlName="name" />
+              <mat-error class="text-xs" *ngIf="myForm.invalid"
+                >Enter a valid name</mat-error
+              > </mat-form-field
+            ><br /><br /><br />
+            <mat-form-field appearance="outline" class="h-5 w-full">
+              <mat-label>Email Id</mat-label>
+              <input
+                type="email"
+                matInput
+                formControlName="username"
+                placeholder="abc@example.com"
+              />
+              <mat-error class="text-xs" *ngIf="myForm.invalid"
+                >Enter a valid email id</mat-error
+              > </mat-form-field
+            ><br /><br /><br />
+            <div class="flex flex-col" style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department">
+                  <mat-option value="ECE">ECE</mat-option>
+                  <mat-option value="EEE">EEE</mat-option>
+                  <mat-option value="CSE">CSE</mat-option>
+                  <mat-option value="MECH">MECH</mat-option>
+                  <mat-option value="CIVIL">CIVIL</mat-option>
+                </mat-select>
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Select department</mat-error
+                >
+              </mat-form-field>
             </div>
+            <br />
+            <br /><br />
+            <div class="flex flex-col" style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>Choose an option</mat-label>
+                <mat-select formControlName="gender">
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                </mat-select>
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Select gender</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <br /><br /><br />
+
+            <mat-form-field appearance="outline" class="h-5 w-full">
+              <mat-label>Phone</mat-label>
+              <input type="text" matInput formControlName="phone" />
+              <mat-error class="text-xs" *ngIf="myForm.invalid"
+                >Enter a phone number</mat-error
+              > </mat-form-field
+            ><br /><br /><br />
+            <div class="flex flex-col" style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>DOB</mat-label>
+                <input type="date" matInput formControlName="dob" />
+                <mat-error class="text-xs">Select the date</mat-error>
+              </mat-form-field>
+            </div>
+            <div></div>
+            <br /><br /><br />
+            <button
+              (click)="editStaff()"
+              class="bg-green-400 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+            >
+              SAVE
+            </button>
           </form>
         </div>
       </div>

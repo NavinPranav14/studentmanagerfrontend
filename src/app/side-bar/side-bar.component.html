@@ -12,19 +12,23 @@
 
     <ul class="flex items-center">
       <li>
-        <h1 class="pl-8 lg:pl-0 text-orange-700">Student Managment System</h1>
+        <h1 class="pl-8 lg:pl-0 text-orange-700 cursor-default">Student Managment System</h1>
       </li>
     </ul>
 
-    <ul class="flex items-center">
+    <ul class="flex items-center"*ngIf="checkStaff() || checkStudent()">
       <li class="h-10 w-10">
         <a (click)="navProfile()">
           <img
-            class="h-full w-full rounded-full mx-auto"
+            class="h-full w-full rounded-full mx-auto cursor-pointer"
             src="https://image.shutterstock.com/image-vector/man-icon-flat-vector-260nw-1371568223.jpg"
             alt="profile woman"
           />
         </a>
+      </li>
+    </ul>
+    <ul class="flex items-center"*ngIf="checkAdmin()">
+      <li class="h-10 w-10">
       </li>
     </ul>
   </nav>
@@ -34,7 +38,7 @@
   <div
     class="flex flex-col top-0 left-0 w-64 bg-white h-full border-r col-span-1"
   >
-    <div class="flex items-center justify-center h-14 border-b">
+    <div class="flex items-center justify-center h-14 border-b cursor-default">
       <div>Admin</div>
     </div>
     <div class="overflow-y-auto overflow-x-hidden flex-grow">
@@ -67,7 +71,7 @@
                 ></path>
               </svg>
             </span>
-            <span class="ml-2 text-sm tracking-wide truncate"
+            <span class="ml-2 text-sm tracking-wide truncate cursor-pointer"
               >All Students</span
             >
           </a>
@@ -93,7 +97,7 @@
                 ></path>
               </svg>
             </span>
-            <span class="ml-2 text-sm tracking-wide truncate">Add Student</span>
+            <span class="ml-2 text-sm tracking-wide truncate cursor-pointer">Add Student</span>
           </a>
         </li>
         <li class="px-5">
@@ -124,7 +128,7 @@
                 ></path>
               </svg>
             </span>
-            <span class="ml-2 text-sm tracking-wide truncate">All staffs</span>
+            <span class="ml-2 text-sm tracking-wide truncate cursor-pointer">All staffs</span>
           </a>
         </li>
         <li *ngIf="checkAdmin()">
@@ -148,14 +152,14 @@
                 ></path>
               </svg>
             </span>
-            <span class="ml-2 text-sm tracking-wide truncate">Add Staff</span>
+            <span class="ml-2 text-sm tracking-wide truncate cursor-pointer">Add Staff</span>
           </a>
         </li>
 
         <li>
           <a
             (click)="logout()"
-            class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6"
+            class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6 cursor-pointer"
           >
             <span class="inline-flex justify-center items-center ml-4">
               <svg
