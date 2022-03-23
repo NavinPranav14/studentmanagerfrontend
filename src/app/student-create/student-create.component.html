@@ -1,12 +1,10 @@
-<div
-  class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center sm:py-12"
->
+<div class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center sm:py-12">
   <div class="relative py-3 sm:max-w-xl sm:mx-auto">
     <div
       class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10"
     >
       <div class="max-w-md mx-auto">
-        <div class="flex items-center space-x-5">
+        <div class="flex items-center space-x-5 cursor-default">
           <div
             class="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono"
           >
@@ -20,61 +18,96 @@
               Please provide the details of the student in this form.
             </p>
           </div>
-        </div>
+        </div><br><br>
         <div class="divide-y divide-gray-200">
           <form [formGroup]="myForm">
-            <div
-              class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7"
-            >
-              <div class="flex flex-col">
-                <label class="leading-loose">Username</label>
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Email Id</mat-label>
                 <input
-                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                  formControlName="username"
-                  placeholder="email"
                   type="email"
-                  required
+                  matInput
+                  formControlName="username"
+                  placeholder="abc@example.com"
                 />
-              </div>
-              <div class="flex flex-col">
-                <label class="leading-loose">Password</label>
-                <input
-                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                  formControlName="password"
-                  placeholder="password"
-                  type="password"
-                  required
-                />
-              </div>
-              <div class="flex flex-col">
-                <label class="leading-loose">Student Name</label>
-                <input
-                  type="text"
-                  class="px-4 py-2 border focus:ring-gray-500 focus:border-gray-900 w-full sm:text-sm border-gray-300 rounded-md focus:outline-none text-gray-600"
-                  placeholder="name"
-                  formControlName="name"
-                  required
-                />
-              </div>
-
-              <div class="flex flex-col">
-                <label class="leading-loose">Department</label>
-                <select               
-                  formControlName="department"
-                  name="department"
-                  id="department"
-                  class="bg-gray-100 h-10"
-                >
-                  <option value="ECE">ECE</option>
-                  <option value="CSE">CSE</option>
-                  <option value="EEE">EEE</option>
-                  <option value="CIVIL">CIVIL</option>
-                </select>
-              </div>
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid email id</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
             </div>
+
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Password</mat-label>
+                <input
+                  matInput
+                  formControlName="password"
+                  [type]="hide ? 'password' : 'text'"
+                />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid password</mat-error
+                >
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide"
+                >
+                  <mat-icon>{{
+                    hide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button> </mat-form-field
+              ><br /><br /><br />
+            </div>
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Name</mat-label>
+                <input type="text" matInput formControlName="name" />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid name</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="gender">
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                </mat-select>
+                <mat-error class="text-xs"
+                  >Select gender</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department">
+                  <mat-option value="ECE">ECE</mat-option>
+                  <mat-option value="EEE">EEE</mat-option>
+                  <mat-option value="CSE">CSE</mat-option>
+                  <mat-option value="MECH">MECH</mat-option>
+                  <mat-option value="CIVIL">CIVIL</mat-option>
+                </mat-select>
+                <mat-error class="text-xs">Select department</mat-error>
+              </mat-form-field>
+            </div>
+            <br /><br />
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-1">
+                <mat-label>DOB</mat-label>
+                <input type="date" matInput formControlName="dob" />
+                <mat-error class="text-xs">Select the date</mat-error>
+              </mat-form-field>
+            </div>
+            <br /><br />
+
             <div class="pt-4 flex items-center space-x-4">
               <button
-                (click)="navStudents()"
+                routerLink="/home/students"
                 class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none"
               >
                 <svg
@@ -94,7 +127,7 @@
                 Cancel
               </button>
               <button
-                (click)="addStudent(); navStudents()"
+                (click)="addStudent()"
                 class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
               >
                 Create

@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../services/api-service.service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-staff-create',
@@ -10,29 +15,66 @@ import { Router } from '@angular/router';
 export class StaffCreateComponent implements OnInit {
   myForm!: FormGroup;
 
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  errorMessage:any = '';
+
+  hide: boolean = true;
+
+  loading:boolean = true;
+
   constructor(
     private apiService: ApiServiceService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {}
+
+  errMessage = ''
 
   ngOnInit(): void {
     this.myForm = this.fb.group({
-      username: new FormControl(),
-      password: new FormControl(),
-      name: new FormControl(),
-      department: new FormControl(),
-      phone: new FormControl(),
+      username: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.min(3)]),
+      name: new FormControl('', [Validators.required, Validators.min(3)]),
+      department: new FormControl('', [Validators.required]),
+      phone: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(13)]),
+      gender:new FormControl('', [Validators.required]),
+      dob:new FormControl('', [Validators.required])
     });
   }
   addStaff() {
-    console.log(this.myForm.value);
-    this.apiService.addStaff(this.myForm.value).subscribe(
-      (res) => console.log(res),
-      (err) => console.log('Invalid data')
-    );
+    if(this.myForm.valid){
+      this.apiService.addStaff(this.myForm.value).subscribe(
+        (res) => {this.openSuccessSnackBar(), this.router.navigate(['home/staffs']);},
+        (err) => {this.errMessage = err.error.message;
+        this.openFailureSnackBar(this.errMessage)}
+      );
+    }
   }
+  
   navStaffs() {
     this.router.navigate(['navstaffs']);
+  }
+
+  openSuccessSnackBar() {
+    {
+      this._snackBar.open('Staff added', '', {
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    }
+  }
+
+  openFailureSnackBar(para: any) {
+    {
+      this._snackBar.open(para, '', {
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    }
   }
 }

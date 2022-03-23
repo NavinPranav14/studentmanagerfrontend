@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiServiceService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -12,7 +11,6 @@ export class SideBarComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private apiService: ApiServiceService
   ) {}
 
   ngOnInit(): void {}
@@ -40,20 +38,24 @@ export class SideBarComponent implements OnInit {
     return localStorage.getItem('staffUser');
   }
 
+  checkStudent(){
+    return localStorage.getItem('studentUser')
+  }
+
   addStaff() {
     this.router.navigate(['addstaff'], { relativeTo: this.route });
   }
 
-  navProfile() {
-    if (localStorage.getItem('staffUser')) {
-      this.router.navigate(['staff/profile'], { relativeTo: this.route });
-    } else if (localStorage.getItem('studentUser')) {
-      this.router.navigate(['student/profile'], { relativeTo: this.route });
-    }
+  navProfile(){
+
+      if(localStorage.getItem('staffUser') || localStorage.getItem('studentUser')){
+        this.router.navigate(['profile'], { relativeTo: this.route })
+      }
   }
 
   logout() {
     localStorage.clear();
-    this.router.navigate(['login']);
+    this.router.navigate(['']);
   }
+
 }

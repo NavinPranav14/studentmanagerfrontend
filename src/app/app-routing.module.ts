@@ -10,31 +10,37 @@ import { EditStudentComponent } from './edit-student/edit-student.component';
 import { EditStaffComponent } from './edit-staff/edit-staff.component';
 import { DeleteStudentComponent } from './delete-student/delete-student.component';
 import { DeleteStaffComponent } from './delete-staff/delete-staff.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
-  { path: 'login/admin', component: LoginComponent },
-  { path: 'login/student', component: LoginComponent },
-  { path: 'login/staff', component: LoginComponent },
-  { path: 'student/create', component: StudentCreateComponent },
-  { path: 'staff/create', component: StaffCreateComponent },
-  { path: 'editstudent', component: EditStudentComponent },
-  { path: 'editstaff', component: EditStaffComponent },
-  { path: 'deletestudent', component: DeleteStudentComponent },
-  { path: 'deletestaff', component: DeleteStaffComponent },
+  { path: '' , component: LoginComponent },
+  { path: 'student/create', component: StudentCreateComponent, canActivate:[AuthGuard] },
+  { path: 'staff/create', component: StaffCreateComponent, canActivate:[AuthGuard] },
+  { path: 'editstudent', component: EditStudentComponent, canActivate:[AuthGuard] },
+  { path: 'editstaff', component: EditStaffComponent, canActivate:[AuthGuard] },
+  { path: 'deletestudent', component: DeleteStudentComponent, canActivate:[AuthGuard] },
+  { path: 'deletestaff', component: DeleteStaffComponent, canActivate:[AuthGuard] },
   {
     path: 'home',
-    component: SideBarComponent,
+    component: SideBarComponent, canActivate:[AuthGuard],
     children: [
-      { path: 'students', component: StudentListComponent },
-      { path: 'staffs', component: StaffListComponent },
+      { path: 'students', component: StudentListComponent ,children:[
+        {path: 'delete', component : DeleteStudentComponent}
+      ]},
+      { path: 'staffs', component: StaffListComponent, children:[
+        {path: 'delete', component: DeleteStaffComponent }
+      ]},
       { path: 'addstudent', component: StudentCreateComponent },
       { path: 'addstaff', component: StaffCreateComponent },
+      { path: 'profile', component: ProfilePageComponent}
+
     ],
   },
-  { path: 'navstudent', redirectTo: 'home/students' },
+  { path: 'navstudent', component: StudentListComponent },
   { path: 'navstaffs', redirectTo: 'home/staffs' },
-];
+]; 
+
 
 @NgModule({
   declarations: [],

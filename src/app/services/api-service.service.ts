@@ -115,4 +115,9 @@ export class ApiServiceService {
       { headers: this.jwttoken }
     );
   }
+
+  loggedIn(): boolean{
+    return !!localStorage.getItem('jwttoken')
+
+  }
 }
