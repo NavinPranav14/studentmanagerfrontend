@@ -114,12 +114,9 @@
         >
       </div>
 
-      <div
-        *ngIf="checkAdmin() || checkOwnId()"
-        class="pt-4 flex items-center space-x-4"
-      >
+      <div *ngIf="checkAdmin()" class="pt-4 flex items-center space-x-4">
         <button
-          (click)="editStaff(); save($event)"
+          (click)="editStaff(st); save($event)"
           attr.id="{{ st.id }}"
           class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
         >
@@ -204,7 +201,7 @@
       </thead>
       <ng-container
         *ngFor="
-          let st of staff.data | paginate: {itemsPerPage: 7, currentPage: p}
+          let st of staff.data | paginate: { itemsPerPage: 7, currentPage: p }
         "
       >
         <tbody>
@@ -223,7 +220,7 @@
               <button
                 class="bg-blue-500 p-2 text-white hover:shadow-lg text-xs mx-3 font-medium"
                 attr.id="{{ st.id }}"
-                (click)="editStaff(); save($event)"
+                (click)="editStaff(st); save($event)"
               >
                 Edit
               </button>

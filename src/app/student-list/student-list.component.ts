@@ -1,10 +1,18 @@
-import { Component, OnInit, ɵNG_ELEMENT_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../services/api-service.service';
-import { Student } from '../student';
+
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable, startWith } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { Student, StudentDetailsJson } from '../student-staff.model';
+import { EditStudentComponent } from '../edit-student/edit-student.component';
 
 @Component({
   selector: 'app-student-list',
@@ -13,63 +21,64 @@ import { map, Observable, startWith } from 'rxjs';
 export class StudentListComponent implements OnInit {
   myForm!: FormGroup;
 
-  llist = [];
+  llist: string[] = [];
 
-  public student: any;
+  student!: StudentDetailsJson;
 
-  public studentUser: any;
+  studentUser!: StudentDetailsJson;
 
-  studentList1 = [];
+  studentList1: string[] = [];
 
-  studentNameList = [];
+  studentNameList: string[] = [];
 
-  studentId: any;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   filteredOptions?: Observable<String[]>;
 
-  summ = 0;
-
   p: number = 1;
 
-  document: any;
+  errMessage: string = '';
+
   constructor(
     private apiServiceService: ApiServiceService,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
   ngOnInit(): void {
     this.studentList();
     this.myForm = this.fb.group({
       studentUnique: new FormControl(),
-      
     });
-    
 
     this.filteredOptions = this.myForm.get('studentUnique')?.valueChanges.pipe(
       startWith(''),
-      map((res: any) => this._filter(res))
+      map((res: string) => this._filter(res))
     );
   }
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.studentNameList.filter((option: any) =>
+    return this.studentNameList.filter((option: string) =>
       option.toLowerCase().includes(filterValue)
     );
   }
 
   studentList(): void {
     this.apiServiceService.studentList().subscribe(
-      (res: any) => {
+      (res: StudentDetailsJson) => {
         this.student = res;
 
         const studentNameList = res.data.map(
-          (item: { name: any }) => item.name
+          (item: { name: string }) => item.name
         );
         this.studentNameList = studentNameList;
       },
-      (err: any) => {
-        alert(err.message);
+      (err: HttpErrorResponse) => {
+        this.errMessage = err.error.message;
+        this.openFailureSnackBar(this.errMessage);
       }
     );
   }
@@ -78,21 +87,24 @@ export class StudentListComponent implements OnInit {
     this.apiServiceService
       .findStudentByName(this.myForm.value.studentUnique)
       .subscribe(
-        (res: Student[]) => {
+        (res) => {
           this.studentUser = res;
-          console.log(res);
         },
-        (err: any) => {
-          alert(err.message);
+        (err: HttpErrorResponse) => {
+          this.errMessage = err.error.message;
+          this.openFailureSnackBar(this.errMessage);
         }
       );
   }
 
-  editStudent() {
-    this.router.navigate(['editstudent']);
+  editStudent(data: Student): void {
+    const dialogRef = this.dialog.open(EditStudentComponent, {
+      width: '550px',
+      data: { editData: data },
+    });
   }
 
-  deleteStudent() {
+  deleteStudent(): void {
     this.router.navigate(['delete'], { relativeTo: this.route });
   }
 
@@ -101,25 +113,25 @@ export class StudentListComponent implements OnInit {
     localStorage.setItem('userId', userId);
   }
 
-  checkAdmin() {
+  checkAdmin(): string | null {
     return localStorage.getItem('adminUser');
   }
 
-  checkStaff() {
+  checkStaff(): string | null {
     return localStorage.getItem('staffUser');
   }
 
-  checkStudent() {
+  checkStudent(): string | null {
     return localStorage.getItem('studentUser');
   }
 
-  checkOwnId() {
-    return localStorage.getItem('username') === this.studentUser.data.username;
-  }
-  searchFilter() {
-    console.log(this.student.data);
-  }
-  displayFn(subject: any) {
-    return subject ? subject.name : undefined;
+  openFailureSnackBar(para: string): void {
+    {
+      this._snackBar.open(para, '', {
+        duration: 5000,
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    }
   }
 }

@@ -24,15 +24,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatIconModule} from '@angular/material/icon';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthGuard } from './auth.guard';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
-  
 @NgModule({
   declarations: [
     AppComponent,
@@ -69,7 +68,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatDialogModule,
     MatIconModule,
     MatTooltipModule,
-    
+    MatDialogModule,
   ],
 
   providers: [EditStudentComponent, AuthGuard],
