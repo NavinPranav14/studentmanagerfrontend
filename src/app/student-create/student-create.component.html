@@ -1,0 +1,142 @@
+<div class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center sm:py-12">
+  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+    <div
+      class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10"
+    >
+      <div class="max-w-md mx-auto">
+        <div class="flex items-center space-x-5 cursor-default">
+          <div
+            class="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono"
+          >
+            i
+          </div>
+          <div
+            class="block pl-2 font-semibold text-xl self-start text-gray-700"
+          >
+            <h2 class="leading-relaxed">Create Student</h2>
+            <p class="text-sm text-gray-500 font-normal leading-relaxed">
+              {{ studentDetail }}
+            </p>
+          </div>
+        </div>
+        <br /><br />
+        <div class="divide-y divide-gray-200">
+          <form [formGroup]="myForm">
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Email Id</mat-label>
+                <input
+                  type="email"
+                  matInput
+                  formControlName="username"
+                  placeholder="abc@example.com"
+                />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid email id</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Password</mat-label>
+                <input
+                  matInput
+                  formControlName="password"
+                  [type]="hide ? 'password' : 'text'"
+                />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid password</mat-error
+                >
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide"
+                >
+                  <mat-icon>{{
+                    hide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button> </mat-form-field
+              ><br /><br /><br />
+            </div>
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Name</mat-label>
+                <input type="text" matInput formControlName="name" />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid name</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="gender">
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                </mat-select>
+                <mat-error class="text-xs"
+                  >Select gender</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department">
+                  <mat-option value="ECE">ECE</mat-option>
+                  <mat-option value="EEE">EEE</mat-option>
+                  <mat-option value="CSE">CSE</mat-option>
+                  <mat-option value="MECH">MECH</mat-option>
+                  <mat-option value="CIVIL">CIVIL</mat-option>
+                </mat-select>
+                <mat-error class="text-xs">Select department</mat-error>
+              </mat-form-field>
+            </div>
+            <br /><br />
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-1">
+                <mat-label>DOB</mat-label>
+                <input type="date" matInput formControlName="dob" />
+                <mat-error class="text-xs">Select the date</mat-error>
+              </mat-form-field>
+            </div>
+            <br /><br />
+
+            <div class="pt-4 flex items-center space-x-4">
+              <button
+                routerLink="/home/students"
+                class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none"
+              >
+                <svg
+                  class="w-6 h-6 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+                Cancel
+              </button>
+              <button
+                (click)="addStudent()"
+                class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

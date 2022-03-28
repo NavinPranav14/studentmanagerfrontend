@@ -1,0 +1,185 @@
+<div class="min-h-screen bg-gray-50 py-6 flex flex-col justify-center sm:py-12">
+  <div class="relative py-3 sm:max-w-xl sm:mx-auto">
+    <div
+      class="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10"
+    >
+      <div class="max-w-md mx-auto">
+        <div class="flex items-center space-x-5 cursor-default">
+          <div
+            class="h-14 w-14 bg-yellow-200 rounded-full flex flex-shrink-0 justify-center items-center text-yellow-500 text-2xl font-mono"
+          >
+            i
+          </div>
+          <div
+            class="block pl-2 font-semibold text-xl self-start text-gray-700"
+          >
+            <h2 class="leading-relaxed">Create Staff</h2>
+            <p class="text-sm text-gray-500 font-normal leading-relaxed">
+              {{ staffDetail }}
+            </p>
+          </div>
+        </div>
+        <br /><br /><br />
+        <div class="divide-y divide-gray-200">
+          <form [formGroup]="myForm">
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Email Id</mat-label>
+                <input
+                  type="email"
+                  matInput
+                  formControlName="username"
+                  placeholder="abc@example.com"
+                />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid email id</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Password</mat-label>
+                <input
+                  matInput
+                  formControlName="password"
+                  [type]="hide ? 'password' : 'text'"
+                />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid password</mat-error
+                >
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide"
+                >
+                  <mat-icon>{{
+                    hide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button> </mat-form-field
+              ><br /><br /><br />
+            </div>
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Name</mat-label>
+                <input type="text" matInput formControlName="name" />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid name</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="gender">
+                  <mat-option value="Male">Male</mat-option>
+                  <mat-option value="Female">Female</mat-option>
+                </mat-select>
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Select gender</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department">
+                  <mat-option value="ECE">ECE</mat-option>
+                  <mat-option value="EEE">EEE</mat-option>
+                  <mat-option value="CSE">CSE</mat-option>
+                  <mat-option value="MECH">MECH</mat-option>
+                  <mat-option value="CIVIL">CIVIL</mat-option>
+                </mat-select>
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Select department</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <br /><br />
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="h-5 w-full">
+                <mat-label>Phone No:</mat-label>
+                <input type="text" matInput formControlName="phone" />
+                <mat-error class="text-xs" *ngIf="myForm.invalid"
+                  >Enter a valid phone number</mat-error
+                > </mat-form-field
+              ><br /><br /><br />
+            </div>
+            <div style="font-size: 12px">
+              <mat-form-field appearance="outline" class="w-full h-5">
+                <mat-label>DOB</mat-label>
+                <input type="date" matInput formControlName="dob" />
+                <mat-error class="text-xs">Select the date</mat-error>
+              </mat-form-field>
+            </div>
+            <br /><br />
+
+            <div class="pt-4 flex items-center space-x-4">
+              <button
+                (click)="navStaffs()"
+                class="flex justify-center items-center w-full text-gray-900 px-4 py-3 rounded-md focus:outline-none"
+              >
+                <svg
+                  class="w-6 h-6 mr-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    ststaffDetailroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  ></path>
+                </svg>
+                Cancel
+              </button>
+              <button
+                (click)="addStaff()"
+                class="bg-blue-500 flex justify-center items-center w-full text-white px-4 py-3 rounded-md focus:outline-none"
+              >
+                Create
+              </button>
+            </div>
+          </form>
+          <div *ngIf="errorMessage">
+            <div
+              class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <strong class="font-bold">{{ errorMessage }}</strong
+              ><br />
+              <span class="block sm:inline">Please provide a valid data</span>
+              <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                <svg
+                  class="fill-current h-6 w-6 text-red-500"
+                  role="button"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <title>Close</title>
+                  <path
+                    d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"
+                  />
+                </svg>
+              </span>
+            </div>
+            <div *ngIf="loading">
+              <div
+                class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800"
+                role="alert"
+              >
+                <span class="font-medium">Success alert!</span> Staff added !
+              </div>
+              {{ navStaffs() }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
