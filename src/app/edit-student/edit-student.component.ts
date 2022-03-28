@@ -1,16 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ApiServiceService } from '../services/api-service.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import {
+  editStudent,
+  studentDetail,
+} from '../student-staff.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Inject } from '@angular/core';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-student',
-  templateUrl: './edit-student.component.html'
+  templateUrl: './edit-student.component.html',
 })
 export class EditStudentComponent implements OnInit {
   myForm!: FormGroup;
@@ -18,52 +33,75 @@ export class EditStudentComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
+  studentEdit: editStudent = this.data;
+
+  studentDetail: string = studentDetail;
+
   constructor(
-    private router: Router,
     private apiService: ApiServiceService,
     private fb: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialogRef: MatDialogRef<EditStudentComponent>,
+    public dialogue: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: editStudent
   ) {}
 
-   errMessage = ''
-   studentEdit :any;
+  errMessage = '';
 
   ngOnInit(): void {
     this.myForm = this.fb.group({
       username: new FormControl(),
       name: new FormControl(),
       department: new FormControl(),
-      gender: new FormControl('',[Validators.required]),
+      gender: new FormControl('', [Validators.required]),
       dob: new FormControl(),
     });
-    setTimeout(() => {this.myForm = this.fb.group({
-      username: new FormControl(this.studentEdit.data.username,  [Validators.required,Validators.email]),
-      name: new FormControl(this.studentEdit.data.name , [Validators.required, Validators.minLength(3)]),
-      department: new FormControl(this.studentEdit.data.department, [Validators.required]),
-      gender: new FormControl(this.studentEdit.data.gender, [Validators.required]),
-      dob: new FormControl(this.studentEdit.data.dob, [Validators.required]),
-    })},500);
-    this.apiService.findStudent(localStorage.getItem('userId')!).subscribe( (res:any) => {this.studentEdit = res, localStorage.setItem('userId',res.data.id)})
+    setTimeout(() => {
+      this.myForm = this.fb.group({
+        username: new FormControl(this.studentEdit?.editData.username, [
+          Validators.required,
+          Validators.email,
+        ]),
+        name: new FormControl(this.studentEdit?.editData.name, [
+          Validators.required,
+          Validators.minLength(3),
+        ]),
+        department: new FormControl(this.studentEdit?.editData.department, [
+          Validators.required,
+        ]),
+        gender: new FormControl(this.studentEdit?.editData.gender, [
+          Validators.required,
+        ]),
+        dob: new FormControl(this.studentEdit?.editData.dob, [
+          Validators.required,
+        ]),
+      });
+    }, 500);
   }
 
-  editStudent() {
-    if(this.myForm.valid){
+  editStudent(): void {
+    if (this.myForm.valid) {
       this.apiService
-      .updateStudent(localStorage.getItem('userId'), this.myForm.value)
-      .subscribe(
-        (res) => {this.openSuccessSnackBar(), this.router.navigate(['home/students']);},
-        (err) => {this.errMessage = err.error.message;
-        this.openFailureSnackBar(this.errMessage)}
-      );
+        .updateStudent(localStorage.getItem('userId')!, this.myForm.value)
+        .subscribe(
+          (res) => {
+            this.openSuccessSnackBar(),
+              window.location.reload(),
+              this.dialogue.closeAll();
+          },
+          (err: HttpErrorResponse) => {
+            this.errMessage = err.error.message;
+            this.openFailureSnackBar(this.errMessage);
+          }
+        );
     }
-
   }
 
-  deleteUSerFromLocalStorage() {
+  deleteUSerFromLocalStorage(): void {
     localStorage.removeItem('userId');
   }
 
-  openSuccessSnackBar() {
+  openSuccessSnackBar(): void {
     {
       this._snackBar.open('Student edited', '', {
         duration: 5000,
@@ -73,7 +111,7 @@ export class EditStudentComponent implements OnInit {
     }
   }
 
-  openFailureSnackBar(para: any) {
+  openFailureSnackBar(para: string): void {
     {
       this._snackBar.open(para, '', {
         duration: 5000,

@@ -6,52 +6,74 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import {
+  cancel,
+  confirmation,
+  del,
+  deleteStaff,
+  StaffDetails,
+} from '../student-staff.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-delete-staff',
   templateUrl: './delete-staff.component.html',
 })
 export class DeleteStaffComponent implements OnInit {
-  errMessage = '';
+  errMessage: string = '';
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  studentDetail : any;
+  staffDetail!: StaffDetails;
+  dataPass!: string;
+  confirmation: string = confirmation;
+  cancel: string = cancel;
+  delete: string = del;
 
   constructor(
     private router: Router,
     private apiService: ApiServiceService,
-    private _snackBar: MatSnackBar,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-      this.findStaff()
+    this.findStaff();
+
+    setTimeout(() => {
+      this.dataPass = deleteStaff.replace('name', this.staffDetail.data.name);
+      this.dataPass = this.dataPass.replace(
+        'departments',
+        this.staffDetail.data.department
+      );
+    }, 200);
   }
-  deletestaff() {
-    this.apiService.deleteStaff(localStorage.getItem('userId')).subscribe(
+
+  deletestaff(): void {
+    this.apiService.deleteStaff(localStorage.getItem('userId')!).subscribe(
       (res) => {
-        this.openSuccessSnackBar(), this.router.navigate(['home/staffs']).then(() => {
-          window.location.reload();
-        });
+        this.openSuccessSnackBar(),
+          this.router.navigate(['home/staffs']).then(() => {
+            window.location.reload();
+          });
       },
-      (err) => {
-        (this.errMessage = err.error.message);
+      (err: HttpErrorResponse) => {
+        this.errMessage = err.error.message;
         this.openFailureSnackBar(this.errMessage);
       }
     );
   }
 
-  findStaff(){
-    this.apiService.findStaff(localStorage.getItem('userId')!).subscribe(
-      res => this.studentDetail = res
-    )
+  findStaff(): void {
+    this.apiService
+      .findStaff(localStorage.getItem('userId')!)
+      .subscribe((res) => (this.staffDetail = res));
   }
-  
-  deleteUSerFromLocalStorage() {
+
+  deleteUSerFromLocalStorage(): void {
     localStorage.removeItem('userId');
   }
 
-  openSuccessSnackBar() {
+  openSuccessSnackBar(): void {
     {
       this._snackBar.open('Staff deleted', '', {
         duration: 5000,
@@ -61,11 +83,10 @@ export class DeleteStaffComponent implements OnInit {
     }
   }
 
-  openFailureSnackBar(para: any) {
+  openFailureSnackBar(para: string): void {
     {
       this._snackBar.open(para, '', {
         duration: 5000,
-        panelClass: ['blue-snackbar'],
         horizontalPosition: this.horizontalPosition,
         verticalPosition: this.verticalPosition,
       });

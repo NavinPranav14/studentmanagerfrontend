@@ -19,13 +19,13 @@
             <h2 class="leading-relaxed">Edit Staff</h2>
 
             <p class="text-sm text-gray-500 font-normal leading-relaxed">
-              Please provide the details of the staff in this form.
+              {{ staffDetail }}
             </p>
           </div>
           <div class="object-none h-10 w-10 object-right-top cursor-pointer">
             <img
               (click)="deleteUSerFromLocalStorage()"
-              routerLink="/home/staffs"
+              matDialogClose
               src="https://www.svgrepo.com/show/55189/cancel.svg"
             />
           </div>

@@ -12,6 +12,7 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -23,12 +24,9 @@ export class LoginComponent implements OnInit {
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  errMessage: any = '';
+  errMessage: string = '';
 
   hide: boolean = true;
-
-  userSelect: any;
-
   constructor(
     private apiService: ApiServiceService,
     private fb: FormBuilder,
@@ -40,11 +38,11 @@ export class LoginComponent implements OnInit {
     this.myForm = this.fb.group({
       username: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
-      app_user: new FormControl('', [Validators.required])
+      app_user: new FormControl('', [Validators.required]),
     });
   }
 
-  checkUser() {
+  checkUser(): void {
     if (localStorage.getItem('user') === 'admin') {
       localStorage.clear();
       localStorage.setItem('adminUser', 'true');
@@ -60,10 +58,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  adminLogin() {
+  adminLogin(): void {
     if (this.myForm.valid) {
       this.apiService.adminLogin(this.myForm.value).subscribe(
         (res) => {
+          console.log(res)
           this.openSuccessSnackBar();
           this.router.navigate(['home/students']);
           localStorage.setItem('jwttoken', res.headers.get('jwttoken') + '');
@@ -76,7 +75,7 @@ export class LoginComponent implements OnInit {
       );
     }
   }
-  staffLogin() {
+  staffLogin(): void {
     if (this.myForm.valid) {
       this.apiService.staffLogin(this.myForm.value).subscribe(
         (res) => {
@@ -92,7 +91,7 @@ export class LoginComponent implements OnInit {
       );
     }
   }
-  studentLogin() {
+  studentLogin(): void {
     if (this.myForm.valid) {
       this.apiService.studentLogin(this.myForm.value).subscribe(
         (res) => {
@@ -100,7 +99,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['home/students']);
           localStorage.setItem('jwttoken', res.headers.get('jwttoken') + '');
         },
-        (err) => {
+        (err: HttpErrorResponse) => {
           localStorage.clear();
           this.errMessage = err.error.message;
           this.openFailureSnackBar(this.errMessage);
@@ -109,22 +108,22 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  setUserName() {
+  setUserName(): void {
     localStorage.setItem('username', this.myForm.value.username);
   }
-  staffUser() {
+  staffUser(): void {
     localStorage.setItem('user', 'staff');
   }
 
-  adminUser() {
+  adminUser(): void {
     localStorage.setItem('user', 'admin');
   }
 
-  studentUser() {
+  studentUser(): void {
     localStorage.setItem('user', 'student');
   }
 
-  openSuccessSnackBar() {
+  openSuccessSnackBar(): void {
     {
       this._snackBar.open('Login success', '', {
         duration: 5000,
@@ -134,7 +133,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  openFailureSnackBar(para: any) {
+  openFailureSnackBar(para: string): void {
     {
       this._snackBar.open(para, '', {
         duration: 5000,

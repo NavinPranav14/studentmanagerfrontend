@@ -6,56 +6,52 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './side-bar.component.html',
 })
 export class SideBarComponent implements OnInit {
-  public profile: any;
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {}
-  students() {
+  students(): void {
     this.router.navigate(['students'], { relativeTo: this.route });
   }
-  staffs() {
+  staffs(): void {
     this.router.navigate(['staffs'], { relativeTo: this.route });
   }
 
-  findStaff() {
+  findStaff(): void {
     this.router.navigate(['findstaff'], { relativeTo: this.route });
   }
 
-  findStudent() {
+  findStudent(): void {
     this.router.navigate(['findstudent'], { relativeTo: this.route });
   }
-  addStudent() {
+  addStudent(): void {
     this.router.navigate(['addstudent'], { relativeTo: this.route });
   }
-  checkAdmin() {
+  checkAdmin(): string | null {
     return localStorage.getItem('adminUser');
   }
-  checkStaff() {
+  checkStaff(): string | null {
     return localStorage.getItem('staffUser');
   }
 
-  checkStudent(){
-    return localStorage.getItem('studentUser')
+  checkStudent(): string | null {
+    return localStorage.getItem('studentUser');
   }
 
-  addStaff() {
+  addStaff(): void {
     this.router.navigate(['addstaff'], { relativeTo: this.route });
   }
 
-  navProfile(){
-
-      if(localStorage.getItem('staffUser') || localStorage.getItem('studentUser')){
-        this.router.navigate(['profile'], { relativeTo: this.route })
-      }
+  navProfile(): void {
+    if (
+      localStorage.getItem('staffUser') ||
+      localStorage.getItem('studentUser')
+    ) {
+      this.router.navigate(['profile'], { relativeTo: this.route });
+    }
   }
 
-  logout() {
+  logout(): void {
     localStorage.clear();
     this.router.navigate(['']);
   }
-
 }

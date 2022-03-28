@@ -15,10 +15,11 @@
           >
             <h2 class="leading-relaxed">Create Student</h2>
             <p class="text-sm text-gray-500 font-normal leading-relaxed">
-              Please provide the details of the student in this form.
+              {{ studentDetail }}
             </p>
           </div>
-        </div><br><br>
+        </div>
+        <br /><br />
         <div class="divide-y divide-gray-200">
           <form [formGroup]="myForm">
             <div style="font-size: 12px">
